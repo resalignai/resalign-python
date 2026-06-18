@@ -239,9 +239,11 @@ class Resalign(SyncAPIClient):
 
     @override
     def _auth_headers(self, security: SecurityOptions) -> dict[str, str]:
-        return {
-            **(self._bearer_auth if security.get("bearer_auth", False) else {}),
-        }
+        headers: dict[str, str] = {}
+        if security.get("bearer_auth", False):
+            for key, value in self._bearer_auth.items():
+                headers.setdefault(key, value)
+        return headers
 
     @property
     def _bearer_auth(self) -> dict[str, str]:
@@ -512,9 +514,11 @@ class AsyncResalign(AsyncAPIClient):
 
     @override
     def _auth_headers(self, security: SecurityOptions) -> dict[str, str]:
-        return {
-            **(self._bearer_auth if security.get("bearer_auth", False) else {}),
-        }
+        headers: dict[str, str] = {}
+        if security.get("bearer_auth", False):
+            for key, value in self._bearer_auth.items():
+                headers.setdefault(key, value)
+        return headers
 
     @property
     def _bearer_auth(self) -> dict[str, str]:
